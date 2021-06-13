@@ -13,4 +13,8 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Klir.TechChallenge.Web.Api\Klir.TechChallenge.Web.Api.csproj" />
+  </ItemGroup>
+
 </Project>

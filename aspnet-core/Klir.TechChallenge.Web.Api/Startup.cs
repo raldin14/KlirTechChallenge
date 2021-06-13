@@ -1,6 +1,8 @@
+using Klir.TechChallenge.Web.Api;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,6 +37,11 @@ namespace KlirTechChallenge.Web.Api
                                   });
             });
 
+            services.AddDbContext<AplicationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionStrings")));
+            services.AddCors(options => options.AddPolicy("AllowWebApp",
+                                                            builder => builder.AllowAnyOrigin()
+                                                                        .AllowAnyHeader()
+                                                                        .AllowAnyMethod()));
             services.AddControllers();
         }
 
@@ -46,6 +53,7 @@ namespace KlirTechChallenge.Web.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("AllowWebApp");
             app.UseRouting();
 
             app.UseCors(AllowSpecificOrigins);
