@@ -40,6 +40,20 @@ namespace Klir.TechChallenge.Web.Api.Controllers
             return product;
         }
 
+        //Get: api/Products/1
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Products>> HasPromotion(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product.PromotionId == null)
+            {
+                return NotFound();
+            }
+
+            return product;
+        }
+
         //PUT: api/Products/1
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, Products product)
