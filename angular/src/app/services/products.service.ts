@@ -31,7 +31,7 @@ export class ProductsService {
     var itemCart = this.cartList.find(e => e.item == item);
     var promotion;
     
-    if(typeof itemCart.item !== 'undefined'){
+    if(itemCart){
       quantity = itemCart.quantity + 1;
       this.shoppingCart.id = itemCart.id;
       this.shoppingCart.item = itemCart.item;
@@ -39,10 +39,10 @@ export class ProductsService {
       this.shoppingCart.price = itemCart.price;
       this.shoppingCart.total = (itemCart.quantity + 1) * itemCart.price;
 
-      if(product.promotionId !== undefined){
+      if(product.promotionId !== null){
         promotion = this.PromotionList.find(e => e.id == product.promotionId);
 
-        if(promotion !== undefined){
+        if(promotion){
           if(promotion.promotion.startsWith('Buy')){
             if (quantity % 2 == 0)
             {
