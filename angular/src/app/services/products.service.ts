@@ -39,6 +39,7 @@ export class ProductsService {
       this.shoppingCart.total = product.price;
 
       this.addProduct(this.shoppingCart);
+      this.getCart();
     }
     else
     {
@@ -79,6 +80,8 @@ export class ProductsService {
           }
         }
         //Update
+        this.update(itemCart.id, this.shoppingCart);
+        this.getCart();
       }
     }
   }
@@ -115,7 +118,7 @@ export class ProductsService {
     return this.http.delete<ShoppingCart>(this.myAppUrl + this.cartApiUrl + id);
   }
 
-  /*update(id: number, cart : ShoppingCart): Observable<ShoppingCart>{
-    //return this.update<ShoppingCart>(this.myAppUrl + this.cartApiUrl + id, this.shoppingCart);
-  }*/
+  update(id: number, cart : ShoppingCart): Observable<ShoppingCart>{
+    return this.http.update<ShoppingCart>(this.myAppUrl + this.cartApiUrl + id, this.shoppingCart);
+  }
 }
