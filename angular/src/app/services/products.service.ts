@@ -53,6 +53,9 @@ export class ProductsService {
         promotion = this.PromotionList.find(e => e.id == product.promotionId);
 
         if(promotion){
+          this.shoppingCart.promotion_Applied = null;
+        }
+        else{
           if(promotion.promotion.startsWith('Buy')){
             if (quantity % 2 == 0)
             {
