@@ -32,6 +32,16 @@ export class ProductsService {
     var promotion;
     
     if(itemCart){
+      this.shoppingCart.id = product.id;
+      this.shoppingCart.item = product.name;
+      this.shoppingCart.quantity = 1;
+      this.shoppingCart.price = product.price;
+      this.shoppingCart.total = product.price;
+
+      this.addProduct(this.shoppingCart);
+    }
+    else
+    {
       quantity = itemCart.quantity + 1;
       this.shoppingCart.id = itemCart.id;
       this.shoppingCart.item = itemCart.item;
@@ -66,15 +76,6 @@ export class ProductsService {
           }
         }
         //Update
-      }
-      else{
-        this.shoppingCart.id = product.id;
-        this.shoppingCart.item = product.name;
-        this.shoppingCart.quantity = 1;
-        this.shoppingCart.price = product.price;
-        this.shoppingCart.total = product.price;
-
-        this.addProduct(this.shoppingCart);
       }
     }
   }
