@@ -1,1 +1,32 @@
-<p>shoppingcart works!</p>
+<table class="table table-sm">
+   <thead>
+    <tr>
+        <td>Item</td>
+        <td>Quantity</td>
+        <td>Price</td>
+        <td>Total</td>
+        <td>Promotion Applied</td>
+        <td>Action</td>
+    </tr>
+   </thead>
+    <tbody>
+        <tr *ngFor="let cart of productService.cartList">
+            <td>{{cart.item}}</td>
+            <td>{{cart.quantity}}</td>
+            <td>{{cart.price}}</td>
+            <td>{{cart.total}}</td>
+            <td>{{cart.promotion_Applied}}</td>
+            <td><i class="fas fa-trash-alt" (click)="deleteItem(cart.id)" style="cursor: pointer;"></i></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>{{productService.total}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

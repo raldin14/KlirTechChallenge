@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ShoppingCart } from 'src/app/models/shoppingcart';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -12,6 +13,11 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.productService.getProducts();
+    this.productService.getPromotion();
+  }
+
+  addingToCart(item: string){
+    this.productService.addingItems(item);
   }
 
 }

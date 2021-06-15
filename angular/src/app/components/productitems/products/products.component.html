@@ -1,12 +1,18 @@
 <table class="table table-sm">
-    <tr>
-        <td>Product</td>
-        <td>Price</td>
-        <td>Add to cart</td>
-    </tr>
-    <tr *ngFor="let product of productService.itemList">
-        <td>{{product.name}}</td>
-        <td>$ {{product.price}}</td>
-        <td><i class="far fa-edit fa-lg text-info" style="cursor: pointer;"></i></td>
-    </tr>
+    <thead>
+        <tr>
+            <td>Product</td>
+            <td>Price</td>
+            <td>Add to cart</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of productService.itemList">
+            <td>{{product.name}}</td>
+            <td>$ {{product.price}}</td>
+            <td><i class="fas fa-shopping-cart" (click)="addingToCart(product.name)" style="cursor: pointer;"> Add to cart</i></td>
+        </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>    
 </table>
