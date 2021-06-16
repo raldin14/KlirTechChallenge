@@ -90,12 +90,6 @@ export class ProductsService {
         total : product.price,
         promotion_Applied : null
       }
-      /*let name = product.name;
-      //this.shoppingCart.id = product.id;
-      this.shoppingCart.item = name;
-      this.shoppingCart.quantity = 1;
-      this.shoppingCart.price = product.price;
-      this.shoppingCart.total = product.price;*/
 
       this.addProduct(this.shoppingCart).subscribe(data =>{
         this.getCart();
