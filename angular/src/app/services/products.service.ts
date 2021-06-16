@@ -20,43 +20,28 @@ export class ProductsService {
   PromotionList: Promotions[];
   constructor(private http: HttpClient) { }
   shoppingCart: ShoppingCart;
+
   addProduct(cart: ShoppingCart): Observable<ShoppingCart>{
     return this.http.post<ShoppingCart>(this.myAppUrl + this.cartApiUrl, cart);
   }
 
   addingItems(item: string){
     
-    let quantity = 0;
+    var quantity = 0;
     var product =  this.itemList.find(e => e.name == item);
     var itemCart = this.cartList.find(e => e.item == item);
     var promotion;
+    var hasPromotion;
     
-    if(itemCart){
-      this.shoppingCart.id = product.id;
-      this.shoppingCart.item = product.name;
-      this.shoppingCart.quantity = 1;
-      this.shoppingCart.price = product.price;
-      this.shoppingCart.total = product.price;
-
-      this.addProduct(this.shoppingCart);
-      this.getCart();
-    }
-    else
+    if(itemCart)
     {
       quantity = itemCart.quantity + 1;
-      this.shoppingCart.id = itemCart.id;
-      this.shoppingCart.item = itemCart.item;
-      this.shoppingCart.quantity = quantity;
-      this.shoppingCart.price = itemCart.price;
-      this.shoppingCart.total = (itemCart.quantity + 1) * itemCart.price;
-
+      hasPromotion = null;
       if(product.promotionId !== null){
         promotion = this.PromotionList.find(e => e.id == product.promotionId);
-
-        if(promotion){
-          this.shoppingCart.promotion_Applied = null;
-        }
-        else{
+        
+        if(promotion)
+        {
           if(promotion.promotion.startsWith('Buy')){
             if (quantity % 2 == 0)
             {
@@ -68,21 +53,54 @@ export class ProductsService {
                         offer++;
                     }
                 }
-                this.shoppingCart.promotion_Applied = "Buy " + offer + " Get " + offer + " Free";
+                hasPromotion = "Buy " + offer + " Get " + offer + " Free";
             }
             else
             {
               if (quantity % 3 == 0)
               {
-                this.shoppingCart.promotion_Applied = quantity + " for " + (10 * quantity) + " Euro";
+                hasPromotion = quantity + " for " + (10 * quantity) + " Euro";
               }
             }
           }
-        }
-        //Update
-        this.update(itemCart.id, this.shoppingCart);
-        this.getCart();
+        }       
       }
+        
+      console.log('Update')
+      this.shoppingCart = {
+        id                : itemCart.id,
+        item              : itemCart.item,
+        quantity          : quantity,
+        price             : itemCart.price,
+        total             : (itemCart.quantity + 1) * itemCart.price,
+        promotion_Applied : hasPromotion
+      }
+      console.log(itemCart.id)
+      this.update(itemCart.id, this.shoppingCart).subscribe(data =>{
+        this.getCart();
+      }); 
+    }
+    else
+    {
+      console.log('Guardando'); 
+      this.shoppingCart = {
+        item : product.name,
+        quantity : 1,
+        price : product.price,
+        total : product.price,
+        promotion_Applied : null
+      }
+      /*let name = product.name;
+      //this.shoppingCart.id = product.id;
+      this.shoppingCart.item = name;
+      this.shoppingCart.quantity = 1;
+      this.shoppingCart.price = product.price;
+      this.shoppingCart.total = product.price;*/
+
+      this.addProduct(this.shoppingCart).subscribe(data =>{
+        this.getCart();
+      });
+      
     }
   }
   getProducts(){
@@ -119,6 +137,6 @@ export class ProductsService {
   }
 
   update(id: number, cart : ShoppingCart): Observable<ShoppingCart>{
-    return this.http.update<ShoppingCart>(this.myAppUrl + this.cartApiUrl + id, this.shoppingCart);
+    return this.http.put<ShoppingCart>(this.myAppUrl + this.cartApiUrl + id, this.shoppingCart);
   }
 }
